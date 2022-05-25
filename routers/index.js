@@ -3,15 +3,15 @@ const router = express.Router();
 // const passportGoogle = require("../config/passportGoogle");
 // const passportGithub = require("../config/passportGithub");
 
-const { userController,commentController } = require("../controllers/index");
+const { userController,commentController,authController } = require("../controllers/index");
 const tokenAuth=require("../middleware/tokenAuth")
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 // router.get("/success", userController.sociaSignUp);
-router.post("/api/signup", userController.signUp);
-router.post("/api/login", userController.logIn);
-router.post("/api/logout", userController.logOut);
+router.post("/api/signup", authController.signUp);
+router.post("/api/login", authController.logIn);
+router.post("/api/logout", authController.logOut);
 
 router.use("/api/auth",tokenAuth.userJWT)
 router.get("/api/auth/comment", commentController.show);

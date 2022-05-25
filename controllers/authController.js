@@ -1,24 +1,25 @@
-const { userService } = require("../services/index");
+const { authService,userService } = require("../services/index");
 const jwt = require("jsonwebtoken");
 const signUp = async (req, res) => {
   try {
     data = req.body;
     if (
-      (await userService.checkNameFormat(data.name)) ||
-      (await userService.checkPasswordFormat(data.password)) ||
-      (await userService.checkEmailFormat(data.email))
+      (await authService.checkNameFormat(data.name)) ||
+      (await authService.checkPasswordFormat(data.password)) ||
+      (await authService.checkEmailFormat(data.email))
     ) {
       return res.status(400).json({
-        detail: "欄位資料格式有誤",
+        detail: "資料格式有誤",
       });
     }
-    if (!(await userService.checkEmailExistsBySignUpEmail(data.email))) {
-      return res.status(400).json("信箱已註冊過");
+    if (!(await authService.checkEmailExistsBySignUpEmail(data.email))) {
+      return res.status(400).json("此信箱已註冊過");
     }
-    const userSingUpState = await userService.createUser(
+    let hashPassword=data.password
+    await userService.createUser(
       data.name,
       data.email,
-      data.password
+      hashPassword
     );
     return res.status(200).json({
       detail: "註冊成功",
@@ -34,16 +35,16 @@ const logIn = async (req, res) => {
   try {
     data = req.body;
     if (
-      (await userService.checkPasswordFormat(data.password)) ||
-      (await userService.checkEmailFormat(data.email))
+      (await authService.checkPasswordFormat(data.password)) ||
+      (await authService.checkEmailFormat(data.email))
     ) {
       return res.status(400).json({
-        detail: "欄位資料格式有誤",
+        detail: "資料格式有誤",
       });
     }
     if (
-      (await userService.checkEmailExistsBySignUpEmail(data.email)) ||
-      (await userService.checkPasswordCorrectBySignInEmail(
+      (await authService.checkEmailExistsBySignUpEmail(data.email)) ||
+      (await authService.checkPasswordAndEmail(
         data.email,
         data.password
       ))
@@ -52,12 +53,11 @@ const logIn = async (req, res) => {
         detail: "信箱或密碼輸入不正確",
       });
     }
-    signInMemberInfo = await userService.getMemberInfo(data.email);
+    signInMemberInfo = await authService.getMemberInfo(data.email);
     const token = jwt.sign(
       { user_id: signInMemberInfo.id, user_mail: signInMemberInfo.email },
       process.env.SECRET_KEY
     );
-    await userService.addToken(signInMemberInfo.id, token);
     return res.status(200).json({
       detail: "登入成功",
       token: token,
