@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
+// const User = sequelize.import('./user.js');
+// const Comment = sequelize.import('./comment.js');
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
@@ -34,7 +36,7 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db['users'].hasMany(db['comments'], {foreignKey:'user_id', targetKey:'id'});
-db['comments'].belongsTo(db['users'], {foreignKey:'user_id', targetKey:'id'});
+// User.hasMany(Comment, {foreignKey:'user_id', targetKey:'id'});
+// Comment.Belons(User, {foreignKey:'user_id', targetKey:'id'});
 
 module.exports = db;

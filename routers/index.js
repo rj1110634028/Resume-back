@@ -8,7 +8,7 @@ const tokenAuth=require("../middleware/tokenAuth")
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.get("/success", userController.sociaSignUp);
+// router.get("/success", userController.sociaSignUp);
 router.post("/api/signup", userController.signUp);
 router.post("/api/login", userController.logIn);
 router.post("/api/logout", userController.logOut);

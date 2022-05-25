@@ -1,24 +1,52 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+
+const User = sequelize.import("./user.js");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
     /**
      * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
+     * This method is not a part of DataTypes lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {  
+    static associate(models) {
       // define association here
+      models.Belons(User, { foreignKey: "user_id", targetKey: "id" });
     }
   }
-  Comment.init({
-    comment: DataTypes.STRING,
-    userId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'comment',
-  });
+  Comment.init(
+    {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      comment: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "users",
+          allowNull: true,
+          key: "id",
+        },
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+    },
+    {
+      sequelize,
+      modelName: "comment",
+    }
+  );
   return Comment;
 };
