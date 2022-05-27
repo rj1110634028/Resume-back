@@ -1,6 +1,5 @@
 "use strict";
 
-const User = sequelize.import("./user.js");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
@@ -11,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Belons(User, { foreignKey: "user_id", targetKey: "id" });
+      this.belongsTo(models.user, { foreignKey: "user_id", targetKey: "id" });
     }
   }
   Comment.init(

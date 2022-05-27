@@ -4,20 +4,19 @@ const router = express.Router();
 // const passportGithub = require("../config/passportGithub");
 
 const { userController,commentController,authController } = require("../controllers/index");
-const tokenAuth=require("../middleware/tokenAuth")
+// const tokenAuth=require("../middleware/tokenAuth")
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 // router.get("/success", userController.sociaSignUp);
 router.post("/api/signup", authController.signUp);
 router.post("/api/login", authController.logIn);
-router.post("/api/logout", authController.logOut);
 
-router.use("/api/auth",tokenAuth.userJWT)
+// router.use("/api/auth",tokenAuth.userJWT)
 router.get("/api/auth/comment", commentController.show);
 router.post("/api/auth/comment", commentController.store);
 router.put("/api/auth/comment", commentController.update);
-router.delete("/api/auth/comment", commentController.delete);
+router.delete("/api/auth/comment", commentController.del);
 
 module.exports = router;
 
