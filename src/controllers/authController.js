@@ -24,7 +24,7 @@ const signUp = async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
-    return res.json({
+    return res.status(400).json({
       err: "伺服器錯誤",
     });
   }
@@ -48,13 +48,14 @@ const logIn = async (req, res) => {
     }
     user = await userService.getUserData(data.email);
     Day = 1000 * 60 * 60 * 24;
-    expiredTime = Date.now() + 7 * Day;
     const token = await authService.makeToken(
+      user.id,
       data.email,
       data.password,
       Date.now() + 7 * Day
     );
     const reFreshToken = await authService.makeToken(
+      user.id,
       data.email,
       data.password,
       Date.now() + 30 * Day
@@ -67,7 +68,7 @@ const logIn = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.json({
+    return res.status(400).json({
       err: "伺服器錯誤",
     });
   }

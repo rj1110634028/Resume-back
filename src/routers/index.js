@@ -4,7 +4,8 @@ const router = express.Router();
 // const passportGithub = require("../config/passportGithub");
 
 const { userController,commentController,authController } = require("../controllers/index");
-// const tokenAuth=require("../middleware/tokenAuth")
+const authMiddleware=require("../middleware/authMiddleware")
+
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
@@ -12,10 +13,10 @@ router.use(express.urlencoded({ extended: true }));
 router.post("/api/signup", authController.signUp);
 router.post("/api/login", authController.logIn);
 
-// router.use("/api/auth",tokenAuth.userJWT)
 router.get("/api/comment", commentController.show);
+router.use("/api/auth",authMiddleware.checkToken)
 router.post("/api/auth/comment", commentController.store);
-router.put("/api/auth/comment", commentController.update);
-router.delete("/api/auth/comment", commentController.del);
+router.patch("/api/auth/comment/:id", commentController.update);
+router.delete("/api/auth/comment/:id", commentController.del);
 
 module.exports = router;

@@ -1,18 +1,71 @@
+const comment = require("../models/comment");
 const db = require("../models/index");
 
-const isComment = (comment) => {
-    return comment != null;
-}
+const isComment = async (comment) => {
+  return comment;
+};
 
 const getComment = async () => {
   const comment = await db["comment"].findAll({
-    attributes: ["userId", "comment", "createdAt"],
+    attributes: ["id", "userId", "comment", "createdAt"],
     order: [["createdAt", "DESC"]],
   });
   return comment;
 };
 
+const createComment = async (comment, userId) => {
+  return await db["comment"].create({
+    comment,
+    userId,
+  });
+};
+
+const updateComment = async (comment, id) => {
+  return await db["comment"].update(
+    {
+      comment,
+    },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
+
+const deleteComment = async (id) => {
+  return await db["comment"].destroy({
+    where: {
+      id,
+    },
+  });
+};
+
+const hasComment = async (id) => {
+  const comment = await db["comment"].findOne({
+    where: {
+      id,
+    },
+  });
+  return comment;
+};
+
+const isOnwer = async (id, userId) => {
+  const comment = await db["comment"].findOne({
+    where: {
+      id,
+    },
+    attributes: ["userId"],
+  });
+  return userId === comment.userId;
+};
+
 module.exports = {
   getComment,
-  isComment
+  isComment,
+  createComment,
+  updateComment,
+  deleteComment,
+  hasComment,
+  isOnwer,
 };

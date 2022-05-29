@@ -8,8 +8,8 @@ const checkRePassword = async (password, rePassword) => {
 const hashPassword = async (password) => {
   return bcrypt.hashSync(password, 10);
 };
-const makeToken = async (title, email, password) => {
-  return jwt.sign({ title, email, password }, process.env.SECRET_KEY);
+const makeToken = async (id, email, password, expiredTime) => {
+  return jwt.sign({ id, email, password, expiredTime }, process.env.SECRET_KEY);
 };
 const checkEmailAndPassword = async (email, password) => {
   user = await db["user"].findOne({ where: { email } });
@@ -20,7 +20,7 @@ const checkToken = async (token) => {
     token,
     process.env.SECRET_KEY,
     function (err, decoded) {
-      return err != null ? err : decoded;
+      return !err ? err : decoded;
     }
   );
   return decoded || null;

@@ -1,10 +1,10 @@
 const db = require("../models/index");
 
 const isName = async (name) => {
-  return name != null && name.length <= 40;
+  return name && name.length <= 40;
 };
 const isPassword = async (password) => {
-  return password != null;
+  return password;
 };
 const isEmail = async (email) => {
   regex =
@@ -27,12 +27,13 @@ const createUser = async (name, email, password) => {
   });
   return user.length;
 };
-const getUserData = async (name, email, password) => {
+const getUserData = async (email) => {
   const user = await db.user.findOne({
-    name,
-    email,
-    password,
+    where: {
+      email,
+    },
   });
+  console.log(user);
   return user;
 };
 
