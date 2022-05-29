@@ -36,7 +36,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-// User.hasMany(Comment, {foreignKey:'user_id', targetKey:'id'});
-// Comment.Belons(User, {foreignKey:'user_id', targetKey:'id'});
-
 module.exports = db;

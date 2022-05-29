@@ -9,12 +9,12 @@ const signUp = async (req, res) => {
       !(await authService.checkRePassword(data.password, data.rePassword))
     ) {
       return res.status(400).json({
-        message: "資料格式有誤",
+        err: "資料格式有誤",
       });
     }
     if (await userService.isEmailExists(data.email)) {
       return res.status(400).json({
-        message: "此信箱已註冊過",
+        err: "此信箱已註冊過",
       });
     }
     let hashPassword = await authService.hashPassword(data.password);
@@ -25,7 +25,7 @@ const signUp = async (req, res) => {
   } catch (err) {
     console.log(err.message);
     return res.json({
-      message: "伺服器錯誤",
+      err: "伺服器錯誤",
     });
   }
 };
@@ -38,12 +38,12 @@ const logIn = async (req, res) => {
       !(await userService.isPassword(data.password))
     ) {
       return res.status(400).json({
-        message: "資料格式有誤",
+        err: "資料格式有誤",
       });
     }
     if (!(await authService.checkEmailAndPassword(data.email, data.password))) {
       return res.status(401).json({
-        message: "信箱或密碼輸入不正確",
+        err: "信箱或密碼輸入不正確",
       });
     }
     user = await userService.getUserData(data.email);
@@ -68,7 +68,7 @@ const logIn = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.json({
-      message: "伺服器錯誤",
+      err: "伺服器錯誤",
     });
   }
 };
