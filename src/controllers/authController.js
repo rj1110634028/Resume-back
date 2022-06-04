@@ -25,14 +25,10 @@ const signUp = async (req, res) => {
     Day = 1000 * 60 * 60 * 24;
     const token = await authService.makeToken(
       user.id,
-      data.email,
-      data.password,
       Date.now() + 7 * Day
     );
     const reFreshToken = await authService.makeToken(
       user.id,
-      data.email,
-      data.password,
       Date.now() + 30 * Day
     );
     return res.status(200).json({
@@ -69,14 +65,10 @@ const logIn = async (req, res) => {
     Day = 1000 * 60 * 60 * 24;
     const token = await authService.makeToken(
       user.id,
-      data.email,
-      data.password,
       Date.now() + 7 * Day
     );
     const reFreshToken = await authService.makeToken(
       user.id,
-      data.email,
-      data.password,
       Date.now() + 30 * Day
     );
     return res.status(200).json({

@@ -8,8 +8,8 @@ const confirmPassword = async (password, confirm) => {
 const hashPassword = async (password) => {
   return bcrypt.hashSync(password, 10);
 };
-const makeToken = async (id, email, password, expiredTime) => {
-  return jwt.sign({ id, email, password, expiredTime }, process.env.SECRET_KEY);
+const makeToken = async (id, expiredTime) => {
+  return jwt.sign({ id, expiredTime }, process.env.SECRET_KEY);
 };
 const checkEmailAndPassword = async (email, password) => {
   user = await db["user"].findOne({ where: { email } });
