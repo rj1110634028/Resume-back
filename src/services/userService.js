@@ -9,7 +9,7 @@ const isPassword = async (password) => {
 const isEmail = async (email) => {
   regex =
     /^[\w!#$%&'*+\-/=?^_`{|}~]+(.[\w!#$%&'*+\-/=?^_`{|}~]+)*@[\w-]+(.[\w-]+)+$/;
-  return email != null && (await regex.test(email));
+  return email && (await regex.test(email));
 };
 const isEmailExists = async (email) => {
   const { count, rows } = await db.user.findAndCountAll({
@@ -25,7 +25,7 @@ const createUser = async (name, email, password) => {
     email,
     password,
   });
-  return user.length;
+  return user;
 };
 const getUserData = async (email) => {
   const user = await db.user.findOne({

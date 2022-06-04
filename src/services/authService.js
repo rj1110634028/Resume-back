@@ -2,8 +2,8 @@ const db = require("../models/index");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const checkRePassword = async (password, rePassword) => {
-  return password === rePassword;
+const confirmPassword = async (password, confirm) => {
+  return password === confirm;
 };
 const hashPassword = async (password) => {
   return bcrypt.hashSync(password, 10);
@@ -29,7 +29,7 @@ const checkToken = async (token) => {
 module.exports = {
   checkEmailAndPassword,
   checkToken,
-  checkRePassword,
+  confirmPassword,
   hashPassword,
   makeToken,
 };

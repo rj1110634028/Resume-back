@@ -2,9 +2,9 @@ const { commentService } = require("../services/index");
 
 const show = async (req, res) => {
   try {
-    const comment = await commentService.getComment();
+    const comments = await commentService.getComment();
     return res.status(200).json({
-      comment,
+      comments,
     });
   } catch (err) {
     console.log(err.message);

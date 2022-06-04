@@ -8,6 +8,12 @@ const isComment = async (comment) => {
 const getComment = async () => {
   const comment = await db["comment"].findAll({
     attributes: ["id", "userId", "comment", "createdAt"],
+    include: [
+      {
+        model: db["user"],
+        attributes: ["name"],
+      },
+    ],
     order: [["createdAt", "DESC"]],
   });
   return comment;

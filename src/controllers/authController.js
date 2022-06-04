@@ -6,10 +6,11 @@ const signUp = async (req, res) => {
       !(await userService.isName(data.name)) ||
       !(await userService.isEmail(data.email)) ||
       !(await userService.isPassword(data.password)) ||
-      !(await authService.checkRePassword(data.password, data.rePassword))
+      !(await authService.confirmPassword(data.password, data.confirm))
     ) {
       return res.status(400).json({
         err: "資料格式有誤",
+        data,
       });
     }
     if (await userService.isEmailExists(data.email)) {
@@ -17,10 +18,28 @@ const signUp = async (req, res) => {
         err: "此信箱已註冊過",
       });
     }
-    let hashPassword = await authService.hashPassword(data.password);
-    await userService.createUser(data.name, data.email, hashPassword);
+    const hashPassword = await authService.hashPassword(data.password);
+    user = await userService.createUser(data.name, data.email, hashPassword);
+    console.log(user);
+    console.log(user.id);
+    Day = 1000 * 60 * 60 * 24;
+    const token = await authService.makeToken(
+      user.id,
+      data.email,
+      data.password,
+      Date.now() + 7 * Day
+    );
+    const reFreshToken = await authService.makeToken(
+      user.id,
+      data.email,
+      data.password,
+      Date.now() + 30 * Day
+    );
     return res.status(200).json({
       message: "註冊成功",
+      name: user.name,
+      token,
+      reFreshToken,
     });
   } catch (err) {
     console.log(err.message);
