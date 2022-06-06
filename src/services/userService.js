@@ -33,7 +33,6 @@ const getUserData = async (email) => {
       email,
     },
   });
-  console.log(user);
   return user;
 };
 

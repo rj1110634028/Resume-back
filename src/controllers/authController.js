@@ -20,8 +20,6 @@ const signUp = async (req, res) => {
     }
     const hashPassword = await authService.hashPassword(data.password);
     user = await userService.createUser(data.name, data.email, hashPassword);
-    console.log(user);
-    console.log(user.id);
     Day = 1000 * 60 * 60 * 24;
     const token = await authService.makeToken(
       user.id,
@@ -33,6 +31,7 @@ const signUp = async (req, res) => {
     );
     return res.status(200).json({
       message: "註冊成功",
+      id: user.id,
       name: user.name,
       token,
       reFreshToken,
@@ -73,6 +72,7 @@ const logIn = async (req, res) => {
     );
     return res.status(200).json({
       message: "登入成功",
+      id: user.id,
       name: user.name,
       token,
       reFreshToken,

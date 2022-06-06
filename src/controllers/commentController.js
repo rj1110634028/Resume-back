@@ -94,14 +94,14 @@ const del = async (req, res) => {
       });
     }
     if (!(await commentService.deleteComment(id))) {
-        return res.status(400).json({
-          err: "錯誤",
-        });
-      } else {
-        return res.status(200).json({
-          message: "刪除成功",
-        });
-      }
+      return res.status(400).json({
+        err: "錯誤",
+      });
+    } else {
+      return res.status(200).json({
+        message: "刪除成功",
+      });
+    }
   } catch (err) {
     console.log(err.message);
     return res.json({
