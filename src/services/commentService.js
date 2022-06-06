@@ -1,13 +1,14 @@
-const comment = require("../models/comment");
 const db = require("../models/index");
+const { Op } = require("sequelize");
 
 const isComment = async (comment) => {
   return comment;
 };
 
-const getComment = async () => {
+const getComment = async (search = null) => {
   const comment = await db["comment"].findAll({
     attributes: ["id", "userId", "comment", "createdAt"],
+    where: search ? {comment:{[Op.like]:`%${search}%`}} : {},
     include: [
       {
         model: db["user"],
