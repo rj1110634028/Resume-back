@@ -38,7 +38,7 @@ const signUp = async (req, res) => {
       reFreshToken,
     });
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     return res.status(400).json({
       err: "伺服器錯誤",
     });

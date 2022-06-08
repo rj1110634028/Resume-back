@@ -30,7 +30,7 @@ const isEmailExists = async (email) => {
 const createUser = async (name, email = null, password = null) => {
   const maxId = await db.user.max("id");
   user = await db.user.create({
-    id: maxId,
+    id: maxId + 1,
     name,
     email,
     password,

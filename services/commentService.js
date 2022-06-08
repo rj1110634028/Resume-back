@@ -8,7 +8,7 @@ const isComment = async (comment) => {
 const getComment = async (search = null) => {
   const comment = await db.comment.findAll({
     attributes: ["id", "userId", "comment", "createdAt"],
-    where: search ? {comment:{[Op.like]:`%${search}%`}} : {},
+    where: search ? { comment: { [Op.like]: `%${search}%` } } : {},
     include: [
       {
         model: db["user"],
@@ -23,6 +23,7 @@ const getComment = async (search = null) => {
 const createComment = async (comment, userId) => {
   const maxId = await db.comment.max("id");
   return await db.comment.create({
+    id: maxId + 1,
     comment,
     userId,
   });
