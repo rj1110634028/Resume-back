@@ -12,6 +12,7 @@ router.use(express.urlencoded({ extended: true }));
 // router.get("/success", userController.sociaSignUp);
 router.post("/api/signup", authController.signUp);
 router.post("/api/login", authController.logIn);
+router.post("/api/anonymouslogin", authController.anonymousLogIn);
 
 router.get("/api/comment", commentController.show);
 router.use("/api/auth",authMiddleware.checkToken)

@@ -6,7 +6,7 @@ const isComment = async (comment) => {
 };
 
 const getComment = async (search = null) => {
-  const comment = await db["comment"].findAll({
+  const comment = await db.comment.findAll({
     attributes: ["id", "userId", "comment", "createdAt"],
     where: search ? {comment:{[Op.like]:`%${search}%`}} : {},
     include: [
@@ -21,14 +21,15 @@ const getComment = async (search = null) => {
 };
 
 const createComment = async (comment, userId) => {
-  return await db["comment"].create({
+  const maxId = await db.comment.max("id");
+  return await db.comment.create({
     comment,
     userId,
   });
 };
 
 const updateComment = async (comment, id) => {
-  return await db["comment"].update(
+  return await db.comment.update(
     {
       comment,
     },
@@ -41,7 +42,7 @@ const updateComment = async (comment, id) => {
 };
 
 const deleteComment = async (id) => {
-  return await db["comment"].destroy({
+  return await db.comment.destroy({
     where: {
       id,
     },
@@ -49,7 +50,7 @@ const deleteComment = async (id) => {
 };
 
 const hasComment = async (id) => {
-  const comment = await db["comment"].findOne({
+  const comment = await db.comment.findOne({
     where: {
       id,
     },
@@ -58,7 +59,7 @@ const hasComment = async (id) => {
 };
 
 const isOnwer = async (id, userId) => {
-  const comment = await db["comment"].findOne({
+  const comment = await db.comment.findOne({
     where: {
       id,
     },

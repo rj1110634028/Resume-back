@@ -12,7 +12,7 @@ const makeToken = async (id, expiredTime) => {
   return jwt.sign({ id, expiredTime }, process.env.SECRET_KEY);
 };
 const checkEmailAndPassword = async (email, password) => {
-  user = await db["user"].findOne({ where: { email } });
+  user = await db.user.findOne({ where: { email } });
   return user != null && bcrypt.compareSync(password, user.password);
 };
 const checkToken = async (token) => {
